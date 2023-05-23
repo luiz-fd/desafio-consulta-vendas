@@ -8,8 +8,8 @@ import com.devsuperior.dsmeta.projections.SaleReportProjection;
 public class SaleReportDTO {
 
 	private Long id;
-	private Double amount;
 	private LocalDate date;
+	private Double amount;
 	private String sellerName;
 	
 	public SaleReportDTO(Long id, Double amount, LocalDate date, String sellerName) {
