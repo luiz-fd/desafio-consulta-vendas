@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.dto.SaleReportDTO;
+import com.devsuperior.dsmeta.dto.SaleSumaryDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.projections.SaleReportProjection;
+import com.devsuperior.dsmeta.projections.SaleSumaryProjection;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
 @Service
@@ -40,6 +42,21 @@ public class SaleService {
 		}
 		Page<SaleReportProjection> result = repository.searchBySeller(name, minData, maxData, pageable);
 		Page<SaleReportDTO> resultDTO = result.map(x -> new SaleReportDTO(x));
+		return resultDTO;
+	}
+	
+	public Page<SaleSumaryDTO> findTotalAmountBySellerName(String minDate, String maxDate, Pageable pageable) {
+		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		LocalDate maxData = today;
+		LocalDate minData = today.minusYears(1L);
+		if(!maxDate.isEmpty()) {
+			maxData = LocalDate.parse(maxDate);
+		}
+		if(!minDate.isEmpty()) {
+			minData = LocalDate.parse(minDate);
+		}
+		Page<SaleSumaryProjection> result = repository.searchTotalAmountBySeller(minData, maxData, pageable);
+		Page<SaleSumaryDTO> resultDTO = result.map(x -> new SaleSumaryDTO(x));
 		return resultDTO;
 	}
 }
